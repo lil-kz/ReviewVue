@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,12 @@
 </head>
 <!-- 
 
-  动态绑定样式对象语法
+  动态绑定style 数组写法
+                其实就是想数组里面添加对象，用的很少
  -->
-
 <body>
-  <div id="app"><!-- 中划线，驼峰标识都可以 
-                      注意50px必须加引号，不然会被当做变量处理
-              -->
-    <h2 :style='{fontSize:"50px"}'> {{name}} </h2>
-    <h2 :style='{fontSize:"50px"}'> {{name}} </h2>
-    <!-- 下面没有加引号，当初变量 里面可以用表达式 包括方法 -->
-    <h2 :style='{fontSize:finalSize + "px",color:clo }'> {{name}} </h2>
-    <h2 :style='getStyles()'> {{name}} </h2>
+  <div id="app">
+    <h2 :style="[font,color,backgroundColor]"> {{name}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -27,15 +22,10 @@
       el: "#app",
       data: {
         name: "周业坤",
-        finalSize:100,
-        clo:'red'
-        
-      },
-      methods: {
-        getStyles(){
-          return {fontSize:this.finalSize + "px",color:this.clo }
-        }
-      },
+        font:{fontSize:"100px"},
+        color:{color:'red'},
+        backgroundColor:{backgroundColor:"gray"}
+      }
     })
   </script>
 </body>
