@@ -6,15 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <!-- 
-  v-bind: 指令 语法糖一个 :  
-          我们不能直接在标签使用mustache{{}}语法 ，我们需要通过指令
-          v-bind: 来使属性里面的值可为变量，动态绑定
+
+  class 对象写法，控制属性的布尔值
+  
  -->
+<style>
+  .acive{
+    color: red;
+  }
+</style>
 <body>
   <div id="app">
-    <img v-bind:src="src" alt="">
-    <a :href="url">百度一下</a>
+    <h2 :class="{ acive:isActive,line:isLine }"> {{name}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -23,8 +28,8 @@
       el: "#app",
       data: {
         name: "周业坤",
-        src:'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
-        url:'http://www.baidu.com',
+        isActive:true,
+        isLine:true
       }
     })
   </script>
