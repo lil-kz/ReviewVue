@@ -7,13 +7,17 @@
   <title>Document</title>
 </head>
 <!-- 
-
-  动态绑定style 数组写法
-                其实就是想数组里面添加对象，用的很少
+  计算属性 我们使用计算属性不需要加（）计算属性就是
+           我们一些想要修改过后在渲染，可以利用计算属性，
+           它是一个属性
  -->
 <body>
   <div id="app">
-    <h2 :style="[font,color,backgroundColor]"> {{name}} </h2>
+    <h2> {{firstName +' '+ lastName}} </h2>
+    <h2> {{firstName }} {{lastName}} </h2>
+    <h2> {{ getFullName() }} </h2>
+    <h2> {{ fullName }} </h2>
+
   </div>
 
   <script src="./js/vue.js"></script>
@@ -22,10 +26,20 @@
       el: "#app",
       data: {
         name: "周业坤",
-        font:{fontSize:"100px"},
-        color:{color:'red'},
-        backgroundColor:{backgroundColor:"gray"}
-      }
+        firstName:'塔',
+        lastName:'木德'
+      },
+      computed: {
+        fullName(){
+          return this.firstName+" "+this.lastName
+        }
+      },
+      methods: {
+        getFullName(){
+          return  this.firstName+" "+this.lastName
+          
+        }
+      },
     })
   </script>
 </body>
