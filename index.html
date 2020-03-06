@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-
 <!-- 
 
-  class 数组写法，属性名为变量
-        如果在标签上写多个class，vue会帮我们把class 写在一起
-        如果类名实在是他多的情况下 你可以在 class中调用函数 当然class前面
-        要加v-bind
-  
+  动态绑定样式对象语法
  -->
-<style>
-  .acive{
-    color: red;
-  }
-</style>
+
 <body>
-  <div id="app">
-    <h2 :class="[active,Line]">{{name}}</h2>
-    <h2 :class="getClass()">{{name}}</h2>
+  <div id="app"><!-- 中划线，驼峰标识都可以 
+                      注意50px必须加引号，不然会被当做变量处理
+              -->
+    <h2 :style='{fontSize:"50px"}'> {{name}} </h2>
+    <h2 :style='{fontSize:"50px"}'> {{name}} </h2>
+    <!-- 下面没有加引号，当初变量 里面可以用表达式 包括方法 -->
+    <h2 :style='{fontSize:finalSize + "px",color:clo }'> {{name}} </h2>
+    <h2 :style='getStyles()'> {{name}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -32,15 +27,15 @@
       el: "#app",
       data: {
         name: "周业坤",
-        active:'acive',
-        Line:'Line'
-      },methods: {
-        getClass(){
-          return [this.active,this.Line]//因为在实例内部需要用this
+        finalSize:100,
+        clo:'red'
+        
+      },
+      methods: {
+        getStyles(){
+          return {fontSize:this.finalSize + "px",color:this.clo }
         }
       },
-
-
     })
   </script>
 </body>
