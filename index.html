@@ -7,33 +7,39 @@
   <title>Document</title>
 </head>
 <!-- 
-  v-on 基本语法，与参数传递
- --> 
+  v-on修饰符的使用
+  事件冒泡 v-on修饰符阻止冒泡
+ -->
 <body>
   <div id="app">
-    <h2>计数器 {{counter}} </h2>
-    <!-- 如果我们不传参数我们不需要在方法后面加（），如果传参则加上（） -->
-    <button @click="sub()">-</button>
-    <button @click="add()">+</button>
-    <!-- 现在模拟 传参数 按钮一有两种情况 第一当方法有形参但是调用的时候有（）
-         不传值，在方法体打印形参 undefined ，第二种当方法有形参但是调用的时候没有（）
-         在方法体打印形参 MouseEvent (event对象)
-    -->
-    <button @click="btnClick1">按钮一</button>
-    <!-- 如果我们的方法有两个形参，但是我们什么都不传  
-          在方法体内部，他会自动把第一个参数当成 event对象
-          其他参数 undefined
-    -->
-    <button @click="btnClick2">按钮二</button>
-    <!-- 
+    <div @click="divClick">
+      我是div
+      <!-- 1. .stop修饰符的使用 阻止事件冒泡
+            我们会发现当我们点击按钮时，div会被触发，
+            我们需要使用v-on修饰符来阻止
+      -->
+        <button @click.stop="btnClick"> 按钮 </button>
+    </div>
+    <br>
+      <!-- 2. .prevent修饰符的使用 阻止默认事件
+              当我们点击提交时自动提交
+              但我们想通过自己写一个点击事件提交
+              这时我们使用.prevent
+      -->
+            <form action="baidu">
+              <input type="submit" value="提交" @click.prevent="submitClick">
+            </form>
+    <br>
+      <!-- 3. .监听键盘事件
+        @keyup当我们松开健品才触发
+        如果我们只想监听某个键如：回出 @keyup.enter
+        -->
+        <input type="text" @keyup.enter="keyup">
 
-      当我们想传递参数并且第二个参数为event对象，我们会发现浏览器报错
-      第一个形参有值，第二个undefined。
-      为什么呢？当我们在data:{event:"hhh"}里面声明了一个变量，就不会报错
-      我们有要怎么才能把event对象传递过去呢？  使用：$event
-      当我们方法第一个参数没加上单引号，会被当成一个变量,需在data里面声明
-     -->
-    <button @click="btnClick3(rich,$event)">按钮三</button>
+      <!-- 4. .native 监听组件根元素的原生事件 -->
+
+      <!-- 5. .once修饰符使用 只触发一次  第二次就没作用 了-->
+      <button @click.once="btnOnce">触发一次</button>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -42,29 +48,27 @@
       el: "#app",
       data: {
         name: "周业坤",
-        counter:0,
-        rich:'so rich'
-        // event:"hhh"
       },
       methods: {
-        add(){
-          this.counter++;
-        },
-        sub(){
-        this.counter--;
-        },
-        btnClick1(val){
-          console.log(val);
+        divClick(){
+          console.log("我是div");
           
         },
-        btnClick2(a,b,c){
-          console.log(a,b,c);
-          
-        },
-        btnClick3(obj,val){
-          console.log(obj,val);
-          
+        btnClick(){
+          console.log("我是btn");
 
+        },
+        submitClick(){
+          console.log("阻止默认事件，自己提交");
+          
+        },
+        keyup(){
+          console.log("keyup触发了");
+          
+        },
+        btnOnce(){
+          console.log("触发一次");
+          
         }
       },
     })
