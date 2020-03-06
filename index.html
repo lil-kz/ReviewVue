@@ -6,37 +6,28 @@
     <title>Document</title>
 </head>
 <body>
-        <div id="app"></div>
-</body>
+  <!-- 
+    mustache语法不仅仅可以写变量，也可以写简单的表达式
+   -->
+<div id="app">
+  <h2>{{name}}</h2>
+  <h2>{{age}}</h2>
+  <h2>{{firstName + lastName}}</h2>
+  <h2>{{counter * 2}}</h2>
+</div>
+
 <script src="./js/vue.js"></script>
-    <script>
-        const app = new Vue({
-            el:"#app",
-            data:{
-
-            },
-            methods: {
-                
-            },
-        })
-    </script>
-    <!-- 
-        创建vue实例传入的options
-        el:
-            类型：string如("#app") | HEMLELEmetn如( document.querySelector("#app")) 直接传入节点
-            作用：决定之后Vue实例会管理哪一个DOM
-        data:
-            类型：Object | FUnction (组件当中data必须是一个函数)  
-            作用：Vue实例对应的数据对象 
-        methods：
-            类型：{[key:string]:FUncton} 
-            作用：定义属于Vue的一些方法，可以在其他地方调用，也可以在指令中使用
-
-        开发中什么时候称为方法，什么时候称之为函数呢？
-            方法：method
-            函数：function
-            方法一般是和某个实例对象挂钩的
-            直接写在全局使用的具名函数一般为函数，
-            但在实际过程中，并没有划分的很细
-     -->
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      name: "周业坤",
+      age:18,
+      firstName:'kobe',
+      lastName:'bryant',
+      counter:100,
+    }
+  })
+</script>
+</body>
 </html>
