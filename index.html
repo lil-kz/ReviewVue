@@ -7,24 +7,33 @@
   <title>Document</title>
 </head>
 <!-- 
-  计算属性 与 methods 对比
-  在做计算时 计算属性 会缓存
- -->
+  v-on 基本语法，与参数传递
+ --> 
 <body>
   <div id="app">
-    <!-- 拼接字符串 -->
-    <h2> {{firstName +" "+ lastName}} </h2>
-    <!-- methods  渲染几次调用几次 -->
-    <!-- <h2> {{getFullName()}} </h2>
-    <h2> {{getFullName()}} </h2>
-    <h2> {{getFullName()}} </h2> -->
-    <!-- computed 同样是 渲染渲染三个标签 但是计算属性只调用一次
-      计算属性内部 会帮我们做缓存 如果发现我们的值没变的化，他直接返回
-      上一次结果，不做新的计算
+    <h2>计数器 {{counter}} </h2>
+    <!-- 如果我们不传参数我们不需要在方法后面加（），如果传参则加上（） -->
+    <button @click="sub()">-</button>
+    <button @click="add()">+</button>
+    <!-- 现在模拟 传参数 按钮一有两种情况 第一当方法有形参但是调用的时候有（）
+         不传值，在方法体打印形参 undefined ，第二种当方法有形参但是调用的时候没有（）
+         在方法体打印形参 MouseEvent (event对象)
     -->
-    <h2> {{fullName}} </h2>
-    <h2> {{fullName}} </h2> 
-    <h2> {{fullName}} </h2>
+    <button @click="btnClick1">按钮一</button>
+    <!-- 如果我们的方法有两个形参，但是我们什么都不传  
+          在方法体内部，他会自动把第一个参数当成 event对象
+          其他参数 undefined
+    -->
+    <button @click="btnClick2">按钮二</button>
+    <!-- 
+
+      当我们想传递参数并且第二个参数为event对象，我们会发现浏览器报错
+      第一个形参有值，第二个undefined。
+      为什么呢？当我们在data:{event:"hhh"}里面声明了一个变量，就不会报错
+      我们有要怎么才能把event对象传递过去呢？  使用：$event
+      当我们方法第一个参数没加上单引号，会被当成一个变量,需在data里面声明
+     -->
+    <button @click="btnClick3(rich,$event)">按钮三</button>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -33,20 +42,29 @@
       el: "#app",
       data: {
         name: "周业坤",
-        firstName:'塔',
-        lastName:'木德',
-      },
-      computed:{
-        fullName(){
-          console.log("我是计算属性，我被调用了");
-          return this.firstName + " " + this.lastName
-        }
+        counter:0,
+        rich:'so rich'
+        // event:"hhh"
       },
       methods: {
-        getFullName(){
-          console.log("我是普通方法，我被调用了");
+        add(){
+          this.counter++;
+        },
+        sub(){
+        this.counter--;
+        },
+        btnClick1(val){
+          console.log(val);
           
-          return this.firstName + " " + this.lastName
+        },
+        btnClick2(a,b,c){
+          console.log(a,b,c);
+          
+        },
+        btnClick3(obj,val){
+          console.log(obj,val);
+          
+
         }
       },
     })
