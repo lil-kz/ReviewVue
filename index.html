@@ -7,17 +7,14 @@
   <title>Document</title>
 </head>
 <!-- 
-  计算属性 我们使用计算属性不需要加（）计算属性就是
-           我们一些想要修改过后在渲染，可以利用计算属性，
-           它是一个属性
+
+1.计算属性复杂引用 
+计算属性 不能与methods中方法同名 不然会当成字符串处理
  -->
 <body>
   <div id="app">
-    <h2> {{firstName +' '+ lastName}} </h2>
-    <h2> {{firstName }} {{lastName}} </h2>
-    <h2> {{ getFullName() }} </h2>
-    <h2> {{ fullName }} </h2>
-
+    <h2>总价格：{{totalPrice1}} </h2>
+    <h2>总价格：{{totalPrice()}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -26,18 +23,30 @@
       el: "#app",
       data: {
         name: "周业坤",
-        firstName:'塔',
-        lastName:'木德'
+        books:[
+          {id: 001, name:'遮天', price:100},
+          {id: 002, name:'完美世界', price:100},
+          {id: 003, name:'极道天魔', price:72},
+        ]
       },
       computed: {
-        fullName(){
-          return this.firstName+" "+this.lastName
+        totalPrice1(){
+          let resule = 0;
+          for(let i=0; i<this.books.length; i++){
+            resule += this.books[i].price;
+          }
+          return resule
         }
       },
       methods: {
-        getFullName(){
-          return  this.firstName+" "+this.lastName
-          
+        totalPrice(){
+          let resule = 0;
+          for(let book of this.books ){
+            console.log(book.price);
+            resule += book.price
+          }
+
+          return resule
         }
       },
     })
