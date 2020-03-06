@@ -6,7 +6,21 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <div id="app"> {{msg}} </div>
 </body>
 <script src="./js/vue.js"></script>
+<script>
+    // 创建vue实例
+    const app = new Vue({
+        el:"#app",//用于挂载要管理的元素，我们必须把要展示的数据放在id为app的标签内部
+        data:{//定义数据
+            msg:"你好，vue"
+        }
+    })
+/* vue：
+    编程范式：声明式编程
+    响应式
+    
+ */
+</script>
 </html>
