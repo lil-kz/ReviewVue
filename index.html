@@ -7,39 +7,24 @@
   <title>Document</title>
 </head>
 <!-- 
-  v-on修饰符的使用
-  事件冒泡 v-on修饰符阻止冒泡
+
+  v-if 基本使用
  -->
 <body>
   <div id="app">
-    <div @click="divClick">
-      我是div
-      <!-- 1. .stop修饰符的使用 阻止事件冒泡
-            我们会发现当我们点击按钮时，div会被触发，
-            我们需要使用v-on修饰符来阻止
-      -->
-        <button @click.stop="btnClick"> 按钮 </button>
+    <div v-if="isShow">
+    <h2> {{name}} </h2>
     </div>
-    <br>
-      <!-- 2. .prevent修饰符的使用 阻止默认事件
-              当我们点击提交时自动提交
-              但我们想通过自己写一个点击事件提交
-              这时我们使用.prevent
-      -->
-            <form action="baidu">
-              <input type="submit" value="提交" @click.prevent="submitClick">
-            </form>
-    <br>
-      <!-- 3. .监听键盘事件
-        @keyup当我们松开健品才触发
-        如果我们只想监听某个键如：回出 @keyup.enter
-        -->
-        <input type="text" @keyup.enter="keyup">
+    <h1 v-else>如果isShow为false，就显示我</h1>
+    <button @click='btnChange'>改变isShow</button>
 
-      <!-- 4. .native 监听组件根元素的原生事件 -->
-
-      <!-- 5. .once修饰符使用 只触发一次  第二次就没作用 了-->
-      <button @click.once="btnOnce">触发一次</button>
+    <!-- 案例 -->
+    <h2 v-if="score>=90">优秀</h2>
+    <h2 v-else-if="score>=80">良好</h2>
+    <h2 v-else-if="score>=60">及格</h2>
+    <h2 v-else>不及格</h2>
+    <!-- 如上的代码需要 较多的逻辑判断，我们可以放在computed里面进行 -->
+    <h2>{{result}}</h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -48,27 +33,25 @@
       el: "#app",
       data: {
         name: "周业坤",
+        isShow:false,
+        score:55,
+      },
+      computed: {
+        result(){
+          let sco = ' ';
+          if(this.score>=90){
+            sco= "优秀";
+          }else if(this.score>=80){
+            sco= "良好";
+          }else{
+            sco= "不及格";
+          }
+          return sco;
+        }
       },
       methods: {
-        divClick(){
-          console.log("我是div");
-          
-        },
-        btnClick(){
-          console.log("我是btn");
-
-        },
-        submitClick(){
-          console.log("阻止默认事件，自己提交");
-          
-        },
-        keyup(){
-          console.log("keyup触发了");
-          
-        },
-        btnOnce(){
-          console.log("触发一次");
-          
+        btnChange(){
+          this.isShow = ! this.isShow
         }
       },
     })
