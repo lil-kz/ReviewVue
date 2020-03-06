@@ -6,21 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="app"> {{msg}} </div>
+    <div id="app"> 
+        <ul>
+            <li v-for="item in movies"> {{item}} </li>
+        </ul>    
+    </div>
 </body>
 <script src="./js/vue.js"></script>
 <script>
-    // 创建vue实例
     const app = new Vue({
-        el:"#app",//用于挂载要管理的元素，我们必须把要展示的数据放在id为app的标签内部
-        data:{//定义数据
-            msg:"你好，vue"
-        }
+        el:"#app",
+        data:{
+            movies:["白日梦想家","当幸福来敲门","肖申克的救赎"]
+        }//只有vue观察到了数据发生变化，视图会自动更新
     })
-/* vue：
-    编程范式：声明式编程
-    响应式
-    
- */
 </script>
 </html>
