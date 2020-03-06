@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<!-- 
+  v-bind: 指令 语法糖一个 :  
+          我们不能直接在标签使用mustache{{}}语法 ，我们需要通过指令
+          v-bind: 来使属性里面的值可为变量，动态绑定
+ -->
+<body>
+  <div id="app">
+    <img v-bind:src="src" alt="">
+    <a :href="url">百度一下</a>
+  </div>
+
+  <script src="./js/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: "#app",
+      data: {
+        name: "周业坤",
+        src:'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3173584241,3533290860&fm=26&gp=0.jpg',
+        url:'http://www.baidu.com',
+      }
+    })
+  </script>
+</body>
+
+</html>
