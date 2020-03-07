@@ -12,13 +12,14 @@
  -->
 <body>
   <div id="app">
-    <!-- <input type="text" v-model="msg"> -->
-    <!-- 通过绑定事件来改变 -->
-    <!-- <input type="text" :value="msg" @input="valueChange"> -->
-    <!-- 也可以这样写 直接在标签内部书写事件来改变数据 -->
-    <input type="text" :value="msg" @input=" msg = $event.target.value ">
-
-    <h2> {{msg}} </h2>
+    <!-- 2个单选按钮中 怎样保证只能选一个，1.定义相同的name  2.定义相同的变量如 v-model -->
+    <label for="male">
+      <input type="radio" id="male" name="sex" value="男" v-model="sex">男
+    </label>
+    <label for="female">
+      <input type="radio" id="female" name="sex" value="女" v-model="sex">女
+    </label>
+    <h2>宁选择的性别为： {{sex}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -27,6 +28,7 @@
       el: "#app",
       data: {
         msg: "哈哈哈",
+        sex:'男',//让radio默认选择男
       },
       methods: {
         valueChange(e){
