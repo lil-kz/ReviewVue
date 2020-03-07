@@ -7,7 +7,8 @@
   <title>Document</title>
 </head>
 <!-- 
-  模板抽离写法
+  组件中的data为什么是一个函数，并且放回一个对象？
+  应为data每次返回的都是一个新的对象，如果组件复用不会造成，共同用一个变量的问题。
  -->
 <body>
   <div id="app">
@@ -23,7 +24,6 @@
 
   <script src="./js/vue.js"></script>
   <script>
-    // const cpn1 = Vue.extend();
 
     // 2.注册组件
     Vue.component('cpn1',{
