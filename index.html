@@ -5,100 +5,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <style>
-    table{
-      text-align: center;
-    }
-  </style>
 </head>
 <!-- 
-  购物车案例
+  高阶函数使用 filter，reduce，map
  -->
 <body>
-  <div id="app">
-    <div v-if="goods.length">
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>书籍名称</th>
-          <th>出版日期</th>
-          <th>单价</th>
-          <th>购买数量</th>
-          <th>价格</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tr v-for="(item,index) in goods ">
-       <td> {{item.id}} </td>
-       <td> {{item.name}} </td>
-       <td> {{item.time}} </td>
-       <!-- <td> ${{item.price.toFixed(2)}} </td>  我们把它封装一下 -->
-       <!-- <td> {{getPrice(item.price)}} </td> 还可以使用过滤器 -->
-       <td> {{item.price | showPrice}} </td> <!-- 第一个值为参数 第二个是调用后返回的值 -->
-       <td>
-         <button @click="sub(index)" :disabled="item.num <= 1">-</button>
-         {{item.num}}
-         <button @click="add(index)">+</button>
-       </td>
-       <td>{{item.money | showMoney}}</td>
-       <td>
-         <button @click="remove(index)"> 移除 </button>
-       </td>
-      </tr>
-    </table>
-    <h2>总价：{{ totalPirce }}</h2>
-    </div>
-    <h2 v-else> 购物车为空 </h2>
-  </div>
 
-  <script src="./js/vue.js"></script>
   <script>
-    const app = new Vue({
-      el: "#app",
-      data: {
-        goods:[
-          {id:1, name:"小米", time:"2019", price:100,money:100, num:1},
-          {id:2, name:"三星", time:"2019", price:200,money:200, num:1},
-          {id:3, name:"苹果", time:"2019", price:300,money:300, num:1},
-        ],
-      },
-      computed:{
-        totalPirce(){
-          let allPrice = 0;
-          for(let obj of this.goods){
-            allPrice+=obj.price * obj.num;
-          }
-          return allPrice;
-        }
-      },
-      methods: {
-        getPrice(price){
-        return "$" + price.toFixed(2)
-        },
-        add(index){
-          this.goods[index].num++;
-          let { price, num} = this.goods[index];
-          this.goods[index].money = price*num;
-        },
-        sub(index){
-          this.goods[index].num--;
-          let { price, num} = this.goods[index];
-          this.goods[index].money = price*num;
-        },
-        remove(index){
-          this.goods.splice(index,1);
-        }
-      },
-      filters:{
-        showPrice(price){
-          return "￥" + price.toFixed(2)
-        },
-        showMoney(price){
-          return "￥" + price.toFixed(2)
-        }
-      }
+    // 1.filter函数使用 过滤出数组中>=100的数
+    let arr = [100,200,3,4,500];
+    arr = arr.filter(item=>{
+      return item >= 100;
     })
+    console.log(arr);
+    
+    // 2.map函数使用 现在把arr里面的值*2 返回
+    let newArr = arr.map(m=>{
+      return m*2
+    })
+    console.log(newArr);//[200, 400, 1000]
+
+    // 3.reduce函数使用 
+    // reduce作用对数组中所有的内容进行汇总
+    newArr = newArr.reduce((preValue,n)=>{//preValue 代表上一次的值
+      return preValue + n
+    },0)
+    console.log(newArr);
+    
+    /* reduce 里面传两个值，一个fn,一个any
+       第一次：我们在第二个参数传的0 那么代表 第一参数里面 preValue 为 0 n为200 下一个值
+       第二次：preValue 200 n 400
+       第三次：preValue 600 n 1000
+     */
+
+    //  现在把前面的函数连在一起使用 先求出>=100 在*2 最后求和
+    let arrs = [100,200,3,4,500];
+    // arrs = arrs.filter(m=>{
+    //   return m>=100;
+    // }).map(m=>{
+    //   return m*2;
+    // }).reduce((preValue,n)=>{
+    //   return preValue + n;
+    // },0)
+    // console.log(arrs);
+    
+    // 也可以这样写 如果存对象的话，reduce必须跟上 第二个参数
+    arrs = arrs.filter(m=> m>=100).map(m=> m*2).reduce((preValue,n)=> preValue + n);
+    console.log(arrs);
+
+    
+
   </script>
 </body>
 
