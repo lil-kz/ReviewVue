@@ -7,54 +7,34 @@
   <title>Document</title>
 </head>
 <!-- 
-  高阶函数使用 filter，reduce，map
+  v-model 使用以及v-model实现原理
+  
  -->
 <body>
+  <div id="app">
+    <!-- <input type="text" v-model="msg"> -->
+    <!-- 通过绑定事件来改变 -->
+    <!-- <input type="text" :value="msg" @input="valueChange"> -->
+    <!-- 也可以这样写 直接在标签内部书写事件来改变数据 -->
+    <input type="text" :value="msg" @input=" msg = $event.target.value ">
 
+    <h2> {{msg}} </h2>
+  </div>
+
+  <script src="./js/vue.js"></script>
   <script>
-    // 1.filter函数使用 过滤出数组中>=100的数
-    let arr = [100,200,3,4,500];
-    arr = arr.filter(item=>{
-      return item >= 100;
+    const app = new Vue({
+      el: "#app",
+      data: {
+        msg: "哈哈哈",
+      },
+      methods: {
+        valueChange(e){
+          this.msg = e.target.value;
+        console.log(e.target.value);
+        }
+      },
     })
-    console.log(arr);
-    
-    // 2.map函数使用 现在把arr里面的值*2 返回
-    let newArr = arr.map(m=>{
-      return m*2
-    })
-    console.log(newArr);//[200, 400, 1000]
-
-    // 3.reduce函数使用 
-    // reduce作用对数组中所有的内容进行汇总
-    newArr = newArr.reduce((preValue,n)=>{//preValue 代表上一次的值
-      return preValue + n
-    },0)
-    console.log(newArr);
-    
-    /* reduce 里面传两个值，一个fn,一个any
-       第一次：我们在第二个参数传的0 那么代表 第一参数里面 preValue 为 0 n为200 下一个值
-       第二次：preValue 200 n 400
-       第三次：preValue 600 n 1000
-     */
-
-    //  现在把前面的函数连在一起使用 先求出>=100 在*2 最后求和
-    let arrs = [100,200,3,4,500];
-    // arrs = arrs.filter(m=>{
-    //   return m>=100;
-    // }).map(m=>{
-    //   return m*2;
-    // }).reduce((preValue,n)=>{
-    //   return preValue + n;
-    // },0)
-    // console.log(arrs);
-    
-    // 也可以这样写 如果存对象的话，reduce必须跟上 第二个参数
-    arrs = arrs.filter(m=> m>=100).map(m=> m*2).reduce((preValue,n)=> preValue + n);
-    console.log(arrs);
-
-    
-
   </script>
 </body>
 
