@@ -5,27 +5,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    table{
+      text-align: center;
+    }
+  </style>
 </head>
-<style>
-  .active{
-    color: red;
-  }
-</style>
 <!-- 
-
-补充上一节漏掉的点，vue提供了一种通过数组下标修改值，更新视图的方法
-
-Vue.set(this.msg,0,"我是往数组小标为0新增元素")
+  购物车案例
  -->
 <body>
   <div id="app">
-    <ul>
-      <li v-for="(item,index) in movies" 
-          :key="item"
-          :class="{ active:currentIndex === index }"
-          @click="change(index)"
-          > {{item}} </li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>书籍名称</th>
+          <th>出版日期</th>
+          <th>价格</th>
+          <th>购买数量</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tr v-for="(item) in goods ">
+       <td> {{item.id}} </td>
+       <td> {{item.name}} </td>
+       <td> {{item.time}} </td>
+       <!-- <td> ${{item.price.toFixed(2)}} </td>  我们把它封装一下 -->
+       <!-- <td> {{getPrice(item.price)}} </td> 还可以使用过滤器 -->
+       <td> {{item.price | showPrice}} </td> <!-- 第一个值为参数 第二个是调用后返回的值 -->
+       <td>
+         <button>-</button>
+         {{item.num}}
+         <button>+</button>
+       </td>
+       <td>
+         <button> 移除 </button>
+       </td>
+      </tr>
+    </table>
+    <h2>总价：{{ totalPirce }}</h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -33,14 +52,23 @@ Vue.set(this.msg,0,"我是往数组小标为0新增元素")
     const app = new Vue({
       el: "#app",
       data: {
-        name: "周业坤",
-        movies:["绣春刀","白日梦想家","侏罗纪公园"],
-        currentIndex:0,
-      },methods: {
-        change(index){
-          this.currentIndex = index;
+        goods:[
+          {id:1, name:"小米", time:"2019", price:100, num:0},
+          {id:2, name:"三星", time:"2019", price:200, num:0},
+          {id:3, name:"苹果", time:"2019", price:300, num:0},
+        ],
+        totalPirce:0
+      },
+      methods: {
+        getPrice(price){
+        return "$" + price.toFixed(2)
         }
       },
+      filters:{
+        showPrice(price){
+          return "$" + price.toFixed(2)
+        }
+      }
     })
   </script>
 </body>
