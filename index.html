@@ -12,14 +12,19 @@
  -->
 <body>
   <div id="app">
-    <!-- 2个单选按钮中 怎样保证只能选一个，1.定义相同的name  2.定义相同的变量如 v-model -->
-    <label for="male">
-      <input type="radio" id="male" name="sex" value="男" v-model="sex">男
+    <!-- 1. checkbox单选框 -->
+    <label for="agree">
+      <input type="checkbox" id="agree" v-model="agree"> 同意协议
     </label>
-    <label for="female">
-      <input type="radio" id="female" name="sex" value="女" v-model="sex">女
-    </label>
-    <h2>宁选择的性别为： {{sex}} </h2>
+    <h2 v-if="!agree">宁选择拒绝： {{agree}} </h2>
+    <h2 v-else>宁同意了： {{agree}} </h2>
+    <button :disabled="!agree">下一步</button>
+    <!-- 1. checkbox单选框 -->
+      <input type="checkbox" id="ball" value="篮球" v-model="likes" >篮球
+      <input type="checkbox" id="ball" value="足球" v-model="likes" >足球
+      <input type="checkbox" id="ball" value="冰球" v-model="likes" >冰球
+    <h2>宁的爱好是 {{ likes }}</h2>
+
   </div>
 
   <script src="./js/vue.js"></script>
@@ -28,7 +33,8 @@
       el: "#app",
       data: {
         msg: "哈哈哈",
-        sex:'男',//让radio默认选择男
+        agree:false,
+        likes:[],
       },
       methods: {
         valueChange(e){
