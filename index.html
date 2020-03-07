@@ -8,13 +8,16 @@
 </head>
 <!-- 
   组件初次使用 
+  全局主键可以在多个Vue实例下使用
+  局部主键先要挂载到Vue实例下才能使用，而且必须先声明，在使用
  -->
 <body>
   <div id="app">
     <!-- 3.使用组件 -->
-    <my-cpn></my-cpn>
-    <my-cpn></my-cpn>
-    <my-cpn></my-cpn>
+    <cpn></cpn>
+  </div>
+  <div id="app2">
+    <!-- <my-cpn></my-cpn> -->
   </div>
 
   <script src="./js/vue.js"></script>
@@ -29,14 +32,28 @@
       `
     })
 
-    // 2.注册组件
-    Vue.component('my-cpn',cpnC)
+    // 2.注册组件 (全局组件意味着可以在多个vue实例下面使用)
+    // Vue.component('my-cpn',cpnC)
+
+    // 局部组件 在Vue实例下挂载
+
+
 
     const app = new Vue({
       el: "#app",
       data: {
         name: "周业坤",
+      },
+      components:{
+        cpn:cpnC
       }
+    })
+
+    const app2 = new Vue({
+    el: "#app2",
+    data: {
+    name: "周业坤",
+    }
     })
   </script>
 </body>
