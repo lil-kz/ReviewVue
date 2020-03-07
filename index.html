@@ -9,10 +9,22 @@
 
 <body>
   <div id="app">
-    <label v-for="item in fruits" :for="item">
-      <input type="checkbox" :value="item" :id="item" v-model="arr">{{item}}
-    </label>
-    <h2>宁选择了 {{arr}}</h2>
+    <!-- 1.修饰符：lazy -->
+    <!-- 如果我们不想让双向绑定时时进行，可以绑定lazy
+         当我们按下回出，或者input失去焦点才改变数据
+    -->
+    <input type="text" v-model.lazy="msg">
+    <h2> {{msg}} </h2>
+
+    <!-- 2.修饰符number v-model默认把值转换成了字符串，
+         有时我们想得到一个 number类型可以加上自律 .number
+    -->
+    <input type="number" v-model.number="age">
+    <h2> {{age +" "+ typeof age}} </h2>
+
+    <!-- 3.trim 去掉首尾空格 在网页上看不出效果，得在控制台看 -->
+    <input type="text" v-model.trim="name">
+    <h2> {{name}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -20,8 +32,9 @@
     const app = new Vue({
       el: "#app",
       data: {
-        fruits:["香蕉","山楂","青枣"],
-        arr:[],
+        msg:'',
+        age:'',
+        name:''
       }
     })
   </script>
