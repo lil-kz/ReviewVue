@@ -8,17 +8,20 @@
 </head>
 <!-- 
   v-if 案例 点击切换
+  上一个demo 有些小问题，比如我输入用户账户，点击切换到用户邮箱
+  会发现上次输入的值还保留着，怎么解决呢？在 input标签上 加上关键字
+  key标识符 
 
  -->
 <body>
   <div id="app">
     <span v-if="isShow">
       <label for="username">用户账号</label>
-      <input type="text" id="username" placeholder="用户账号"> 
+      <input type="text" id="username" placeholder="用户账号" key="user">
     </span>
     <span v-else>
       <label for="email">用户邮箱</label>
-      <input type="text" id="email" placeholder="用户邮箱">
+      <input type="text" id="email" placeholder="用户邮箱" key="email">
     </span>
     <button @click="btnChange">切换类型</button>
   </div>
