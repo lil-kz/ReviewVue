@@ -7,23 +7,15 @@
   <title>Document</title>
 </head>
 <!-- 
-  v-if 案例 点击切换
-  上一个demo 有些小问题，比如我输入用户账户，点击切换到用户邮箱
-  会发现上次输入的值还保留着，怎么解决呢？在 input标签上 加上关键字
-  key标识符 
-
+  v-show: 控制元素显示隐藏
+  与v-if 区别：
+  v-show 为false 那么浏览器还会保存这个标签只不过 样式变味了display:none,
+  v-if 为false 那么浏览器直接移除标签 如果为true 那么浏览器会创建 新DOM对象
+  如果需要频繁切换 那么使用v-show,否则使用v-if,通常v-if会经常使用。
  -->
 <body>
   <div id="app">
-    <span v-if="isShow">
-      <label for="username">用户账号</label>
-      <input type="text" id="username" placeholder="用户账号" key="user">
-    </span>
-    <span v-else>
-      <label for="email">用户邮箱</label>
-      <input type="text" id="email" placeholder="用户邮箱" key="email">
-    </span>
-    <button @click="btnChange">切换类型</button>
+    <h2> {{name}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -32,13 +24,7 @@
       el: "#app",
       data: {
         name: "周业坤",
-        isShow:true,
-      },
-      methods: {
-        btnChange(){
-          this.isShow = ! this.isShow;
-        }
-      },
+      }
     })
   </script>
 </body>
