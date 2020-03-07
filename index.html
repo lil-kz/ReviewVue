@@ -6,25 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<!-- 
-  v-model 使用以及v-model实现原理
-  
- -->
+
 <body>
   <div id="app">
-    <!-- 1. checkbox单选框 -->
-    <label for="agree">
-      <input type="checkbox" id="agree" v-model="agree"> 同意协议
-    </label>
-    <h2 v-if="!agree">宁选择拒绝： {{agree}} </h2>
-    <h2 v-else>宁同意了： {{agree}} </h2>
-    <button :disabled="!agree">下一步</button>
-    <!-- 1. checkbox单选框 -->
-      <input type="checkbox" id="ball" value="篮球" v-model="likes" >篮球
-      <input type="checkbox" id="ball" value="足球" v-model="likes" >足球
-      <input type="checkbox" id="ball" value="冰球" v-model="likes" >冰球
-    <h2>宁的爱好是 {{ likes }}</h2>
+    <!-- 1.选择一个 -->
+    <select name="abc" v-model="fruit">
+      <option value="苹果">苹果</option>
+      <option value="梨子">梨子</option>
+      <option value="橘子">橘子</option>
+      <option value="香蕉">香蕉</option>
+    </select>
+    <h2>宁选择的水果是 {{fruit}} </h2>
 
+    <!-- 2.选择多个 select标签加上multiple 可按住ctrl或shift选择多个 -->
+    <select name="abc" v-model="fruits" multiple>
+      <option value="苹果">苹果</option>
+      <option value="梨子">梨子</option>
+      <option value="橘子">橘子</option>
+      <option value="香蕉">香蕉</option>
+    </select>
+    <h2>宁选择的水果是 {{fruits}} </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -32,16 +33,9 @@
     const app = new Vue({
       el: "#app",
       data: {
-        msg: "哈哈哈",
-        agree:false,
-        likes:[],
-      },
-      methods: {
-        valueChange(e){
-          this.msg = e.target.value;
-        console.log(e.target.value);
-        }
-      },
+        fruit:'香蕉',
+        fruits:[],
+      }
     })
   </script>
 </body>
