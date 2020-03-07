@@ -16,18 +16,20 @@
  -->
 <body>
   <div id="app">
+    <div v-if="goods.length">
     <table>
       <thead>
         <tr>
           <th></th>
           <th>书籍名称</th>
           <th>出版日期</th>
-          <th>价格</th>
+          <th>单价</th>
           <th>购买数量</th>
+          <th>价格</th>
           <th>操作</th>
         </tr>
       </thead>
-      <tr v-for="(item) in goods ">
+      <tr v-for="(item,index) in goods ">
        <td> {{item.id}} </td>
        <td> {{item.name}} </td>
        <td> {{item.time}} </td>
@@ -35,16 +37,19 @@
        <!-- <td> {{getPrice(item.price)}} </td> 还可以使用过滤器 -->
        <td> {{item.price | showPrice}} </td> <!-- 第一个值为参数 第二个是调用后返回的值 -->
        <td>
-         <button>-</button>
+         <button @click="sub(index)" :disabled="item.num <= 1">-</button>
          {{item.num}}
-         <button>+</button>
+         <button @click="add(index)">+</button>
        </td>
+       <td>{{item.money | showMoney}}</td>
        <td>
-         <button> 移除 </button>
+         <button @click="remove(index)"> 移除 </button>
        </td>
       </tr>
     </table>
     <h2>总价：{{ totalPirce }}</h2>
+    </div>
+    <h2 v-else> 购物车为空 </h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -53,20 +58,44 @@
       el: "#app",
       data: {
         goods:[
-          {id:1, name:"小米", time:"2019", price:100, num:0},
-          {id:2, name:"三星", time:"2019", price:200, num:0},
-          {id:3, name:"苹果", time:"2019", price:300, num:0},
+          {id:1, name:"小米", time:"2019", price:100,money:100, num:1},
+          {id:2, name:"三星", time:"2019", price:200,money:200, num:1},
+          {id:3, name:"苹果", time:"2019", price:300,money:300, num:1},
         ],
-        totalPirce:0
+      },
+      computed:{
+        totalPirce(){
+          let allPrice = 0;
+          for(let obj of this.goods){
+            allPrice+=obj.price * obj.num;
+          }
+          return allPrice;
+        }
       },
       methods: {
         getPrice(price){
         return "$" + price.toFixed(2)
+        },
+        add(index){
+          this.goods[index].num++;
+          let { price, num} = this.goods[index];
+          this.goods[index].money = price*num;
+        },
+        sub(index){
+          this.goods[index].num--;
+          let { price, num} = this.goods[index];
+          this.goods[index].money = price*num;
+        },
+        remove(index){
+          this.goods.splice(index,1);
         }
       },
       filters:{
         showPrice(price){
-          return "$" + price.toFixed(2)
+          return "￥" + price.toFixed(2)
+        },
+        showMoney(price){
+          return "￥" + price.toFixed(2)
         }
       }
     })
