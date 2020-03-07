@@ -6,35 +6,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-
+<!-- 
+  组件初次使用 
+ -->
 <body>
   <div id="app">
-    <!-- 1.修饰符：lazy -->
-    <!-- 如果我们不想让双向绑定时时进行，可以绑定lazy
-         当我们按下回出，或者input失去焦点才改变数据
-    -->
-    <input type="text" v-model.lazy="msg">
-    <h2> {{msg}} </h2>
-
-    <!-- 2.修饰符number v-model默认把值转换成了字符串，
-         有时我们想得到一个 number类型可以加上自律 .number
-    -->
-    <input type="number" v-model.number="age">
-    <h2> {{age +" "+ typeof age}} </h2>
-
-    <!-- 3.trim 去掉首尾空格 在网页上看不出效果，得在控制台看 -->
-    <input type="text" v-model.trim="name">
-    <h2> {{name}} </h2>
+    <!-- 3.使用组件 -->
+    <my-cpn></my-cpn>
+    <my-cpn></my-cpn>
+    <my-cpn></my-cpn>
   </div>
 
   <script src="./js/vue.js"></script>
   <script>
+    // 1.创建组件构造器对象
+    const cpnC = Vue.extend({
+      template:`
+        <div>
+          <h2>我是标题</h2>
+          <p>我是内容</p>
+        </div>
+      `
+    })
+
+    // 2.注册组件
+    Vue.component('my-cpn',cpnC)
+
     const app = new Vue({
       el: "#app",
       data: {
-        msg:'',
-        age:'',
-        name:''
+        name: "周业坤",
       }
     })
   </script>
