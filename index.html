@@ -9,23 +9,10 @@
 
 <body>
   <div id="app">
-    <!-- 1.选择一个 -->
-    <select name="abc" v-model="fruit">
-      <option value="苹果">苹果</option>
-      <option value="梨子">梨子</option>
-      <option value="橘子">橘子</option>
-      <option value="香蕉">香蕉</option>
-    </select>
-    <h2>宁选择的水果是 {{fruit}} </h2>
-
-    <!-- 2.选择多个 select标签加上multiple 可按住ctrl或shift选择多个 -->
-    <select name="abc" v-model="fruits" multiple>
-      <option value="苹果">苹果</option>
-      <option value="梨子">梨子</option>
-      <option value="橘子">橘子</option>
-      <option value="香蕉">香蕉</option>
-    </select>
-    <h2>宁选择的水果是 {{fruits}} </h2>
+    <label v-for="item in fruits" :for="item">
+      <input type="checkbox" :value="item" :id="item" v-model="arr">{{item}}
+    </label>
+    <h2>宁选择了 {{arr}}</h2>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -33,8 +20,8 @@
     const app = new Vue({
       el: "#app",
       data: {
-        fruit:'香蕉',
-        fruits:[],
+        fruits:["香蕉","山楂","青枣"],
+        arr:[],
       }
     })
   </script>
