@@ -6,17 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+<style>
+  .active{
+    color: red;
+  }
+</style>
 <!-- 
 
-  v-for 能发生响应式的方法，与不能发生响应式的方法
-  可变参数 如果函数接受参数过多，那么就用 (...str)来接受参数，打印str 是一个数组.
-  
+补充上一节漏掉的点，vue提供了一种通过数组下标修改值，更新视图的方法
+
+Vue.set(this.msg,0,"我是往数组小标为0新增元素")
  -->
 <body>
   <div id="app">
     <ul>
-      <li v-for="item in msg" :key="item">{{item}}</li>
-      <button @click="insert">按钮</button>
+      <li v-for="(item,index) in movies" 
+          :key="item"
+          :class="{ active:currentIndex === index }"
+          @click="change(index)"
+          > {{item}} </li>
     </ul>
   </div>
 
@@ -26,72 +34,14 @@
       el: "#app",
       data: {
         name: "周业坤",
-        msg:["a","b","c","d","e"]
-      },
-      methods: {
-        insert(){
-          // this.msg.splice(2,0,"我是新插入的内容")
-          /* 能发生响应式的方法 */
-          // 1.push方法 能更多个参数
-          // this.msg.push("周业坤",111,222)
-
-          // 2.pop方法 删除最后一个
-          // this.msg.pop()
-
-          // 3.shift方法 删除数组中的第一元素
-          // this.msg.shift();
-
-          // 4.unshift方法 能更多个参数 数组最前面添加元素
-          // this.msg.unshift("塔木德","aaa","bbb");
-
-          // 5.splice作用：删除元素/插入元素/替换元素
-          /* 第一个参数代表起始位置，(三种方法通用)从小标0开始
-             第二个参数：删除方法：代表你要删除几个参数，就传多少，number
-             第三个参数：如果存在三个及以上参数那么可替换
-           */
-          //1. 删除：删除小标为一开始，删除两个，如果只有一个1，那么从下标
-          // 为1的元素删除到后面所有元素。
-          // this.msg.splice(1,2);
-
-          //2.替换 如果第二个参数为二，但是后面所替换的内容超过2
-          // 那么他还是会被插入进去，作为新的元素。
-          // this.msg.splice(1,2,"aaa","bbbb","woqu");
-          // 2.通过索引值修改数组元素  不能
-          // this.msg[0] = "塔木德";  //页面无变化，但数据改变了
-
-          //3.插入，关键在于第二个参数，必须为0，第三个及以上参数为插入的值
-          // this.msg.splice(0,0,"塔木德");
-
-          // 6.sort 
-          // 7.reverse() 数组反转
-          // this.msg.reverse();
-
-          // 与不能发生响应式的方法
-
-          // 1.通过数组下标改变
-          this.msg[0]='周业坤';
-          
-          // 2.concat() 数组连接
-          // this.msg.concat("周业坤");
-          // 想要实现视图更改，那么重新赋值
-          // let msg = this.msg.concat("周业坤");
-          // this.msg = msg;
-
+        movies:["绣春刀","白日梦想家","侏罗纪公园"],
+        currentIndex:0,
+      },methods: {
+        change(index){
+          this.currentIndex = index;
         }
       },
     })
-
-    function add(...num){
-      console.log(num);
-      
-    }
-    add(1,2,3,4);
-    var arr = ["qqq","www"];
-    var newArr = ["周业坤"]
-    
-    console.log(arr.concat(123));
-    console.log(arr);
-    
   </script>
 </body>
 
