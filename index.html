@@ -7,15 +7,43 @@
   <title>Document</title>
 </head>
 <!-- 
-  v-show: 控制元素显示隐藏
-  与v-if 区别：
-  v-show 为false 那么浏览器还会保存这个标签只不过 样式变味了display:none,
-  v-if 为false 那么浏览器直接移除标签 如果为true 那么浏览器会创建 新DOM对象
-  如果需要频繁切换 那么使用v-show,否则使用v-if,通常v-if会经常使用。
- -->
+  v-for 基本使用
+-->
 <body>
   <div id="app">
     <h2> {{name}} </h2>
+    <!-- 遍历数组 -->
+    <!-- 在遍历过程中没有使用索引值（下标值） -->
+    <ul>
+      <li v-for=" item in msg "> {{item}} </li>
+    </ul>
+    <!-- 在遍历过程中没使用索引值（下标值） -->
+    <ul>
+      <li v-for=" (item,index) in msg "> {{index+1 +"."+ item}} </li>
+    </ul>
+
+    <!-- 遍历单个对象 -->
+    <ul><!-- 如果对象是一个单个简单对象，遍历时有两个参数那么第二个值为 对象的键值(key)
+             如果想要获取index怎么办呢，加入第三个参数 index
+      -->
+      <li v-for=" (item,key,index) in info "> {{item}}==={{key}}==={{index}} </li>
+    </ul>
+    <!-- 在遍历过程中没使用索引值（下标值） -->
+    <ul>
+      <li v-for=" (item,index) in info "> {{index +"."+ item}} </li>
+    </ul>
+
+    <!-- 遍历数组对象 -->
+    <!-- 在遍历过程中没有使用索引值（下标值） -->
+    <ul>
+      <li v-for=" item in boods "> {{item.name}} </li>
+    </ul>
+    <!-- 在遍历过程中没使用索引值（下标值） -->
+    <ul>
+      <li v-for=" (item,index) in boods "> 
+        <p v-for="(val,key) in item"> {{val}}--{{key}} </p>
+        </li>
+    </ul>
   </div>
 
   <script src="./js/vue.js"></script>
@@ -24,6 +52,17 @@
       el: "#app",
       data: {
         name: "周业坤",
+        msg:["你好吗？","我很好","谢谢"],
+        boods:[
+          {name:"遮天",price:100},
+          {name:"追风筝的人",price:100},
+          {name:"十日谈",price:100},
+        ],
+        info:{
+          name:"百年孤独",
+          time:'2020/3/34',
+          author:"周业坤"
+        }
       }
     })
   </script>
