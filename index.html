@@ -2,15 +2,8 @@
 <html lang="en">
 <!-- 
   组件通信
-  父访问子-$refs
-  并且可以修改子组件的值
-  我们大多数情况下会使用$refs取到子组件的数据并且修改
-  如果我们使用$children来获取子组件的值，因为$children是通过下标来
-  获取的，有可能我们往子组件前面又新增了一个子组件，那么我们又要修改
-  下标值。
-  ref的使用，首先组件是子组件，在子组件标签上写上 ref="你自己的命名" 如下
-  <cpn ref="msg"></cpn>
-  我们在父组件方法内部使用 this.$refs.msg来获取子组件的全部数据
+  子访问父 $parent 
+  可以直接修改父组件的数据
  -->
 <head>
   <meta charset="UTF-8">
@@ -20,12 +13,14 @@
 
 <body>
   <div id="app">
-    <cpn ref="msg"></cpn>
-    <button @click="btnClick">点击</button>
+    <input type="text" v-model="name">
+    <cpn></cpn>
   </div>
     <template id="cpn">
       <div>
         子组件
+        <button @click="getParent">子组件按钮</button>
+        <input type="text" :value="name"  @input="inputVal">
       </div>
     </template>
   <script src="./js/vue.js"></script>
@@ -45,7 +40,15 @@
           setTimeout(() => {
             console.log(this.name);
           });
+        },
+        getParent(){
+          // this.$parent.name = "塔木德"
+          console.log(this.$parent.name);
           
+        },
+        inputVal(e){
+          this.name = e.target.value;
+          this.$parent.name = this.name;
         }
       },
     }
@@ -54,13 +57,7 @@
       el: "#app",
       data: {
         name: "周业坤",
-      },
-      methods: {
-        btnClick(){
-          console.log(this.$refs.msg);
-          this.$refs.msg.showName()
-          this.$refs.msg.name = "哈哈"
-        }
+        msg:'你好吗'
       },
       components:{
         cpn
