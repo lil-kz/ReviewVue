@@ -2,8 +2,9 @@
 <html lang="en">
 <!-- 
   组件通信
-  子访问父 $parent 
-  可以直接修改父组件的数据
+  访问vue(根实例)root
+  通过在事件中调用 this.$root
+  也可以修改根组件的data
  -->
 <head>
   <meta charset="UTF-8">
@@ -15,14 +16,25 @@
   <div id="app">
     <input type="text" v-model="name">
     <cpn></cpn>
+    <father></father>
   </div>
-    <template id="cpn">
-      <div>
-        子组件
-        <button @click="getParent">子组件按钮</button>
-        <input type="text" :value="name"  @input="inputVal">
-      </div>
-    </template>
+
+  <template id="cpn">
+    <div>
+      子组件
+      <button @click="getParent">子组件按钮</button>
+      <input type="text" :value="name"  @input="inputVal">
+      <button @click='getRoot'>访问root</button>
+    </div>
+  </template>
+
+  <template id="father">
+    <div>
+      我是父亲组件
+      <cpn></cpn>
+    </div>
+  </template>
+
   <script src="./js/vue.js"></script>
   <script>
 
@@ -44,13 +56,31 @@
         getParent(){
           // this.$parent.name = "塔木德"
           console.log(this.$parent.name);
+          console.log(this.$parent);
           
         },
         inputVal(e){
           this.name = e.target.value;
           this.$parent.name = this.name;
+        },
+        getRoot(){
+          this.$root.name = "男"
+          console.log(this.$root);
+          
         }
       },
+    }
+    const father = {
+      template:'#father',
+      data() {
+        return {
+          name:"我在来试一下",
+          phone:18200471972
+        }
+      },
+      components:{
+        cpn
+      }
     }
 
     const app = new Vue({
@@ -60,7 +90,8 @@
         msg:'你好吗'
       },
       components:{
-        cpn
+        cpn,
+        father
       }
     })
   </script>
