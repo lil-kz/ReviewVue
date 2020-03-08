@@ -8,28 +8,26 @@
 </head>
 <!-- 
   插槽初使用
-  可以直接写slot标签里面为空
-  也可在里面slot写标签,这样代表给插槽默认值
-  当然如果在组件内部在写入内容那么默认值将会
-  被新值覆盖。
-  ！！！而且组件内部你可以写多个标签。
+  具名插槽 当我们使用具名插槽时，想要修改某一个
+  插槽的内容那么在组件中写入新的标签，并且标签内部
+  要写上属性 slot="***" 你定义的插槽name
  -->
 <body>
   <div id="app">
     <cpn>
-      <h4>我是插槽</h4>
-      <h4>我是123</h4>
-      <h4>我是321</h4>
+      <!-- <span slot="center">标题</span> -->
+      <div slot="center">
+        <p>1</p>
+        <p>1</p>
+        <p>1</p>
+      </div>
     </cpn>
-    <cpn>
-      <h5>我是第二个插槽</h5>
-    </cpn>
-    <cpn></cpn>
   </div>
   <template id="cpn">
     <div>
-      <h1>我是标题</h1>
-      <slot>我是默认值</slot>
+      <slot name="left"><span>左边</span> </slot>
+      <slot name="center"><span>中间</span> </slot>
+      <slot name="right"><span>右边</span> </slot>
     </div>
   </template>
 
