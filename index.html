@@ -1,134 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- 
 
-  组件通信_子改父数据_$listeners
- -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-
+<!-- 
+  插槽初使用
+  可以直接写slot标签里面为空
+  也可在里面slot写标签,这样代表给插槽默认值
+  当然如果在组件内部在写入内容那么默认值将会
+  被新值覆盖。
+  ！！！而且组件内部你可以写多个标签。
+ -->
 <body>
   <div id="app">
-    <father v-bind="$attrs"
-            :mag="mag"
-            :name="name"
-            :age="age"
-    ></father>
+    <cpn>
+      <h4>我是插槽</h4>
+      <h4>我是123</h4>
+      <h4>我是321</h4>
+    </cpn>
+    <cpn>
+      <h5>我是第二个插槽</h5>
+    </cpn>
+    <cpn></cpn>
   </div>
   <template id="cpn">
     <div>
-      儿子显示：
-      {{this.$attrs.books}}
-      儿子的儿子
-      <test v-bind="$attrs"
-            :data="{ data1,data2, data3}"
-            v-on="$listeners"
-            @to-cpn="toCpn"
-
-      ></test>
-    </div>
-  </template>
-
-  <template id="father">
-    <div>
-      父亲显示：
-      <h2>下面是我儿子</h2>
-      <cpn label="姓名"
-           class="acitve"
-           test-attrs="$attrs"
-           v-bind="$attrs"
-           :books="books"
-           @test-cpn="testCpn"
-           @test-sun="testSun"
-      ></cpn>
+      <h1>我是标题</h1>
+      <slot>我是默认值</slot>
     </div>
   </template>
 
   <script src="./js/vue.js"></script>
   <script>
 
-    /* 重点 如果我们有三个组件，A为B的父组件,B为C的父组件
-       当我们想要使用C来分发(触发)自定义事件,来改变A组件的数据时，
-       我们必须在C组件标签上写$listeners, ！！而且！！自定义事件
-       必须是写在B组件标签上的，但是是在C组件内部进行触发。
-       如果没有在C组件标签上写$listeners，那么A组件是不会触发事件的。
-    */
-
-
-    // 这是儿子
     const cpn = {
       template:"#cpn",
-      inheritAttrs:true,
-      props:["label"],
-      data() {
-        return {
-         data1:'我是cpn上的数据111',
-         data2:'我是cpn上的数据222',
-         data3:'我是cpn上的数据333'
-        }
-      },
-      methods:{
-        toCpn(val){
-          console.log("我是test的父亲我收到了",val);
-        }
-      },
-      mounted() {
-        this.$emit("test-cpn","cpn儿子来了");
-        // console.log("cpn",this.$attrs);
-      }, 
-      //这是孙子
-      components:{
-        test:{
-          template:"<h1>我是孙子</h1>",
-          mounted() {
-            this.$emit("test-sun","test孙子来啦");
-            this.$emit("to-cpn","cpn里面的test")
-            // console.log('test',this.$attrs);
-          },
-        }
-      }
-    }
-
-    //这是祖先
-    const father = {
-      template:"#father",
-      data() {
-        return {
-          books:"三国演义"
-        }
-      },
-      mounted() {
-        // console.log("father",this.$attrs);
-      },
-      methods: {
-        testCpn(val){
-          console.log("我是祖宗我收到了",val);
-        },
-        testSun(val){
-          console.log("我是祖宗我收到了",val);
-          
-        }
-      },
-      components:{
-        cpn
-      }
     }
 
     const app = new Vue({
       el: "#app",
       data: {
-         mag:'哈哈哈',
-         name:"周业坤",
-         age:18
-      },
-      created() {
-      // console.log(this.$attrs);
+        name: "周业坤",
       },
       components:{
-        father
+        cpn
       }
     })
   </script>
