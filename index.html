@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- 
-  组件通信驼峰标识
+  组件通信 ==> 子传父
+  需要用到自定义事件 this.$emit
+
+  总价 父子组件通信
+  父传递子  在子组件标签上通过v-bind(:) 定义一个变量来绑定传来的值
+           不要使用驼峰 可以用中划线。然后在子组件内部通过props来接受传递过来的值。
+
+  子传父    通常子组件触发了一个方法，并在方法里面通过this.$emit来自定义一个函数
+           里面接受两个参数，第一个为自定义事件名，第二个为传递过去的参数
+           我们把自定义事件名通过v-on(@)绑定到子组件标签上，让后在给父组件定义一个
+           方法名，不用传参(默认已经携带)如果传递会覆盖到子传父的值，之后在父组件内
+           部methods里面使用这个方法来接受这个参数。 重点注意：自定义事件名不能使用
+           驼峰以及中划线，方法名可以使用驼峰不能使用中划线。
  -->
 <head>
   <meta charset="UTF-8">
@@ -11,15 +23,24 @@
 
 <body>
   <div id="app">
-    {{info}}
-    <!-- <cpn :cInfo="info"></cpn>  在标签内部不能使用驼峰语法 用中划线代替 -->
-    <cpn :c-info="info"></cpn>
+    <div>
+      <h2>这里是父组件</h2>
+    </div>
+    <!-- 现在绑定子传父自定义事件，注意模板里面不能用驼峰,并且也不能中划线代替
+         在脚手架里面可以。通常使用小写来代替
+         自定义事件名最好都使用小写 如@handel
+    -->
+    <cpn @handel="btnClick"></cpn>
   </div>
+
+
   <template id="cpn">
     <div>
       <h1>我是局部组件</h1>
-      <h2>我的信息</h2>
-      <p> {{cInfo}} </p> <!-- 在子组件内部可以使用驼峰 -->
+      <h2>子组件的信息</h2>
+      <button v-for="item in books"
+              @click="btnChange(item)"
+      > {{item.name}} </button> 
     </div>
   </template>
 
@@ -28,6 +49,15 @@
 
     const cpn = {
       template:"#cpn",
+      data() {
+        return {
+         books:[
+           {id:001,name:'完美世界',price:100},
+           {id:002,name:'遮天',price:100},
+           {id:003,name:'圣墟',price:100},
+         ]
+        }
+      },
       props:{
         cInfo:{
           type:Object,
@@ -35,7 +65,14 @@
             return { };
           }
         }
-      }
+      },
+      methods: {
+        btnChange(val){
+          // console.log(val);
+          this.$emit("handel",val) //第一个为定义的事件，第二个为传过去的参数
+          
+        }
+      },
     }
 
     const app = new Vue({
@@ -46,6 +83,14 @@
           name:'周业坤',
           age:18,
           height:1.88
+        }
+      },
+      methods:{
+        btnClick(val){
+          // console.log("我接受到了来自子组件的数据"+"  "+ val.name);
+          console.log(val);
+          
+          
         }
       },
       components:{
