@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- 
-  成对出现：provide和inject是成对出现的
-  作用：用于父组件向子孙组件传递数据
-  使用方法： provide在父组件中返回要传给下级的数据，inject在需要使用这个数据的子辈组件或者孙辈等下级组件中注入数据。
-  使用场景：由于vue有$parent属性可以让子组件访问父组件。但孙组件想要访问祖先组件就比较困难。通过provide/inject可以轻松实现跨级访问父组件的数据
+   eventBus
+   可用于子父组件，也可用于同级组件
+   
+
  -->
 <head>
   <meta charset="UTF-8">
@@ -15,73 +15,81 @@
 <body>
   <div id="app">
     <cpn></cpn>
+    <cpn1></cpn1>
   </div>
-
-  <template id="sun">
-    <div>
-      我是孙组件
-      <button @click="getMsg">孙按钮</button> 
-    </div>
-  </template>
 
   <template id="cpn">
     <div>
-      我是子组件
-      <sun></sun>
+      我是兄弟二传来的名字：{{name}}
+      我是兄弟一 
+      <button @click="additionHandle">按钮一加</button>
+    </div>
+  </template>
+
+  <template id="cpn1">
+    <div>
+      我是兄弟二
+      <button @click="sendName">按钮二</button>
+      <h2>兄弟一传过来的值 {{num}} </h2>
     </div>
   </template>
 
   <script src="./js/vue.js"></script>
   <script>
-
-    const sun = {
-      template:"#sun",
-      inject:["yeye"],
-      mounted() {
-        this.yeye.age = 10;
-        this.yeye.name = "塔木德";
-        console.log("孙"+this.yeye.age);
-        console.log("孙"+this.yeye.name);
-      },
-      methods: {
-        getMsg(){
-
+    const Bus = new Vue();
+    
+    const cpn = {
+      template:'#cpn',
+      data() {
+        return {
+          name:"",
+          num:0,
         }
       },
-    };
+      mounted() {
+        Bus.$on("sendName",name=>{
+          this.name = name
+        })
+      },
+      methods:{
+        additionHandle(){
+          Bus.$emit('getNum', {
+            num:this.num+=1
+          })
+        }
+      },
+    }
 
-    const cpn = {
-      template:"#cpn",
-      components:{
-        sun
+    const cpn1 = {
+    template:'#cpn1',
+      data() {
+        return {
+          name:"塔木德",
+          num:0,
+        }
+      },
+      mounted() {
+      Bus.$on('getNum', param => {
+      // console.log(param);
+      this.num = this.num + param.num;
+        })
+      },
+      methods:{ //给兄弟一传递名字
+        sendName(){
+          Bus.$emit("sendName",this.name);
+        }
       }
-    };
+    }
+    
 
     const app = new Vue({
       el: "#app",
       data: {
         name: "周业坤",
-        age:18
-      },
-      // provide可以是一个对象 对象包含需要提供的key：“value”
-      // provide:{
-      //   yeye:"this"
-      // },
-      // provide可以是一个方法返回一个对象
-      provide(){ 
-        return {
-          yeye:this,
-          value:this.age
-        }
-      },
-      mounted() {
-        setTimeout(() => {
-          console.log(this.name);
-        });
-        
       },
       components:{
-      cpn
+        cpn,
+        cpn1
       }
     })
   </script>
