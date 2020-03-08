@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- 
+  组件通信驼峰标识
+ -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +11,15 @@
 
 <body>
   <div id="app">
-    <cpn :cmovies="moves"></cpn>
+    {{info}}
+    <!-- <cpn :cInfo="info"></cpn>  在标签内部不能使用驼峰语法 用中划线代替 -->
+    <cpn :c-info="info"></cpn>
   </div>
-
   <template id="cpn">
     <div>
       <h1>我是局部组件</h1>
-      <ul>
-        <li v-for="item in cmovies"> {{item}} </li>
-      </ul>
+      <h2>我的信息</h2>
+      <p> {{cInfo}} </p> <!-- 在子组件内部可以使用驼峰 -->
     </div>
   </template>
 
@@ -26,19 +28,25 @@
 
     const cpn = {
       template:"#cpn",
-      props:["cmovies"],
-      data() {
-        return {
-          
+      props:{
+        cInfo:{
+          type:Object,
+          default(){
+            return { };
+          }
         }
-      },
+      }
     }
 
     const app = new Vue({
       el: "#app",
       data: {
         name: "周业坤",
-        moves:["海王","狮子王","木乃伊"]
+        info:{
+          name:'周业坤',
+          age:18,
+          height:1.88
+        }
       },
       components:{
         cpn
