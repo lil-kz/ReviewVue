@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- 
-  组件通信
-  访问vue(根实例)root
-  通过在事件中调用 this.$root
-  也可以修改根组件的data
+  成对出现：provide和inject是成对出现的
+  作用：用于父组件向子孙组件传递数据
+  使用方法： provide在父组件中返回要传给下级的数据，inject在需要使用这个数据的子辈组件或者孙辈等下级组件中注入数据。
+  使用场景：由于vue有$parent属性可以让子组件访问父组件。但孙组件想要访问祖先组件就比较困难。通过provide/inject可以轻松实现跨级访问父组件的数据
  -->
 <head>
   <meta charset="UTF-8">
@@ -14,84 +14,74 @@
 
 <body>
   <div id="app">
-    <input type="text" v-model="name">
     <cpn></cpn>
-    <father></father>
   </div>
 
-  <template id="cpn">
+  <template id="sun">
     <div>
-      子组件
-      <button @click="getParent">子组件按钮</button>
-      <input type="text" :value="name"  @input="inputVal">
-      <button @click='getRoot'>访问root</button>
+      我是孙组件
+      <button @click="getMsg">孙按钮</button> 
     </div>
   </template>
 
-  <template id="father">
+  <template id="cpn">
     <div>
-      我是父亲组件
-      <cpn></cpn>
+      我是子组件
+      <sun></sun>
     </div>
   </template>
 
   <script src="./js/vue.js"></script>
   <script>
 
-    const cpn = {
-      template:"#cpn",
-      data() {
-        return {
-          name:"塔木德",
-          age:18,
-        }
+    const sun = {
+      template:"#sun",
+      inject:["yeye"],
+      mounted() {
+        this.yeye.age = 10;
+        this.yeye.name = "塔木德";
+        console.log("孙"+this.yeye.age);
+        console.log("孙"+this.yeye.name);
       },
       methods: {
-        showName(){
-          console.log("我被父组件调用了");
-          setTimeout(() => {
-            console.log(this.name);
-          });
-        },
-        getParent(){
-          // this.$parent.name = "塔木德"
-          console.log(this.$parent.name);
-          console.log(this.$parent);
-          
-        },
-        inputVal(e){
-          this.name = e.target.value;
-          this.$parent.name = this.name;
-        },
-        getRoot(){
-          this.$root.name = "男"
-          console.log(this.$root);
-          
+        getMsg(){
+
         }
       },
-    }
-    const father = {
-      template:'#father',
-      data() {
-        return {
-          name:"我在来试一下",
-          phone:18200471972
-        }
-      },
+    };
+
+    const cpn = {
+      template:"#cpn",
       components:{
-        cpn
+        sun
       }
-    }
+    };
 
     const app = new Vue({
       el: "#app",
       data: {
         name: "周业坤",
-        msg:'你好吗'
+        age:18
+      },
+      // provide可以是一个对象 对象包含需要提供的key：“value”
+      // provide:{
+      //   yeye:"this"
+      // },
+      // provide可以是一个方法返回一个对象
+      provide(){ 
+        return {
+          yeye:this,
+          value:this.age
+        }
+      },
+      mounted() {
+        setTimeout(() => {
+          console.log(this.name);
+        });
+        
       },
       components:{
-        cpn,
-        father
+      cpn
       }
     })
   </script>
