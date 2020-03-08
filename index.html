@@ -6,18 +6,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-
+<!-- 
+  组件通信结合v-model
+ -->
 <body>
   <div id="app">
-    <h2> {{name}} </h2>
+    <cpn :number1="number1"
+         :number2="number2"
+         @changenum1="changenum1"
+         @changenum2="changenum2"
+         ></cpn>
   </div>
-
+  <template id="cpn">
+    <div>
+      <span>props:{{number1}}</span><br>
+      <span>data:{{dnumber1}}</span>
+      <br>
+      <input type="text" :value="dnumber1" @input="numInput1">
+      <br>
+      <span>props:{{number2}}</span><br>
+      <span>data:{{dnumber2}}</span>
+      <br>
+      <input type="text" :value="dnumber2" @input="numInput2">
+    </div>
+  </template>
   <script src="./js/vue.js"></script>
   <script>
+
+    const cpn = {
+      template:"#cpn",
+      props:{
+        number1:Number,
+        number2:Number
+      },
+      data() {
+        return {
+          dnumber1:this.number1,
+          dnumber2:this.number2,
+        }
+      },
+      methods: {
+        numInput1(e){
+          this.dnumber1 = e.target.value;
+          this.$emit("changenum1",e.target.value);
+          /* 我们现在改变需求 输入dnumber1时，dnumber2是dnumber1 的一百倍
+             dnumber1是dnumber的百分之一我们可以如下
+           */
+          this.dnumber2 = this.dnumber1*100;
+          this.$emit("changenum2",this.dnumber2)
+
+        },
+        numInput2(e){
+          this.dnumber2 = e.target.value;
+          this.$emit("changenum2",e.target.value)
+          /* 我们现在改变需求 输入dnumber1时，dnumber2是dnumber1 的一百倍
+             dnumber1是dnumber的百分之一我们可以如下
+           */
+          this.dnumber1 = this.dnumber2/100;
+          this.$emit("changenum1",this.dnumber1);
+        }
+      },
+    }
+
     const app = new Vue({
       el: "#app",
       data: {
         name: "周业坤",
+        number1:0,
+        number2:0,
+      },
+      methods: {
+        changenum1(val){
+          this.number1 = parseInt(val);
+        },
+        changenum2(val){
+          this.number2 = parseInt(val);
+
+        }
+      },
+      components:{
+        cpn
       }
     })
   </script>
