@@ -2,7 +2,7 @@
 <html lang="en">
 <!-- 
 
-  组件通信_子辈获取祖先辈的值
+  组件通信_子改父数据_$listeners
  -->
 <head>
   <meta charset="UTF-8">
@@ -25,7 +25,9 @@
       儿子的儿子
       <test v-bind="$attrs"
             :data="{ data1,data2, data3}"
-      
+            v-on="$listeners"
+            @to-cpn="toCpn"
+
       ></test>
     </div>
   </template>
@@ -39,6 +41,8 @@
            test-attrs="$attrs"
            v-bind="$attrs"
            :books="books"
+           @test-cpn="testCpn"
+           @test-sun="testSun"
       ></cpn>
     </div>
   </template>
@@ -46,6 +50,15 @@
   <script src="./js/vue.js"></script>
   <script>
 
+    /* 重点 如果我们有三个组件，A为B的父组件,B为C的父组件
+       当我们想要使用C来分发(触发)自定义事件,来改变A组件的数据时，
+       我们必须在C组件标签上写$listeners, ！！而且！！自定义事件
+       必须是写在B组件标签上的，但是是在C组件内部进行触发。
+       如果没有在C组件标签上写$listeners，那么A组件是不会触发事件的。
+    */
+
+
+    // 这是儿子
     const cpn = {
       template:"#cpn",
       inheritAttrs:true,
@@ -57,21 +70,29 @@
          data3:'我是cpn上的数据333'
         }
       },
-      mounted() {
-        console.log("cpn",this.$attrs);
-        
+      methods:{
+        toCpn(val){
+          console.log("我是test的父亲我收到了",val);
+        }
       },
+      mounted() {
+        this.$emit("test-cpn","cpn儿子来了");
+        // console.log("cpn",this.$attrs);
+      }, 
+      //这是孙子
       components:{
         test:{
           template:"<h1>我是孙子</h1>",
           mounted() {
-            console.log('test',this.$attrs);
-            
+            this.$emit("test-sun","test孙子来啦");
+            this.$emit("to-cpn","cpn里面的test")
+            // console.log('test',this.$attrs);
           },
         }
       }
     }
 
+    //这是祖先
     const father = {
       template:"#father",
       data() {
@@ -80,7 +101,16 @@
         }
       },
       mounted() {
-        console.log("father",this.$attrs);
+        // console.log("father",this.$attrs);
+      },
+      methods: {
+        testCpn(val){
+          console.log("我是祖宗我收到了",val);
+        },
+        testSun(val){
+          console.log("我是祖宗我收到了",val);
+          
+        }
       },
       components:{
         cpn
@@ -95,7 +125,7 @@
          age:18
       },
       created() {
-      console.log(this.$attrs);
+      // console.log(this.$attrs);
       },
       components:{
         father
