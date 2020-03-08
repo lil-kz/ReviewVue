@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- 
-   eventBus
-   可用于子父组件，也可用于同级组件
-   
 
+  组件通信_子辈获取祖先辈的值
  -->
 <head>
   <meta charset="UTF-8">
@@ -14,82 +12,93 @@
 
 <body>
   <div id="app">
-    <cpn></cpn>
-    <cpn1></cpn1>
+    <father v-bind="$attrs"
+            :mag="mag"
+            :name="name"
+            :age="age"
+    ></father>
   </div>
-
   <template id="cpn">
     <div>
-      我是兄弟二传来的名字：{{name}}
-      我是兄弟一 
-      <button @click="additionHandle">按钮一加</button>
+      儿子显示：
+      {{this.$attrs.books}}
+      儿子的儿子
+      <test v-bind="$attrs"
+            :data="{ data1,data2, data3}"
+      
+      ></test>
     </div>
   </template>
 
-  <template id="cpn1">
+  <template id="father">
     <div>
-      我是兄弟二
-      <button @click="sendName">按钮二</button>
-      <h2>兄弟一传过来的值 {{num}} </h2>
+      父亲显示：
+      <h2>下面是我儿子</h2>
+      <cpn label="姓名"
+           class="acitve"
+           test-attrs="$attrs"
+           v-bind="$attrs"
+           :books="books"
+      ></cpn>
     </div>
   </template>
 
   <script src="./js/vue.js"></script>
   <script>
-    const Bus = new Vue();
-    
-    const cpn = {
-      template:'#cpn',
-      data() {
-        return {
-          name:"",
-          num:0,
-        }
-      },
-      mounted() {
-        Bus.$on("sendName",name=>{
-          this.name = name
-        })
-      },
-      methods:{
-        additionHandle(){
-          Bus.$emit('getNum', {
-            num:this.num+=1
-          })
-        }
-      },
-    }
 
-    const cpn1 = {
-    template:'#cpn1',
+    const cpn = {
+      template:"#cpn",
+      inheritAttrs:true,
+      props:["label"],
       data() {
         return {
-          name:"塔木德",
-          num:0,
+         data1:'我是cpn上的数据111',
+         data2:'我是cpn上的数据222',
+         data3:'我是cpn上的数据333'
         }
       },
       mounted() {
-      Bus.$on('getNum', param => {
-      // console.log(param);
-      this.num = this.num + param.num;
-        })
+        console.log("cpn",this.$attrs);
+        
       },
-      methods:{ //给兄弟一传递名字
-        sendName(){
-          Bus.$emit("sendName",this.name);
+      components:{
+        test:{
+          template:"<h1>我是孙子</h1>",
+          mounted() {
+            console.log('test',this.$attrs);
+            
+          },
         }
       }
     }
-    
+
+    const father = {
+      template:"#father",
+      data() {
+        return {
+          books:"三国演义"
+        }
+      },
+      mounted() {
+        console.log("father",this.$attrs);
+      },
+      components:{
+        cpn
+      }
+    }
 
     const app = new Vue({
       el: "#app",
       data: {
-        name: "周业坤",
+         mag:'哈哈哈',
+         name:"周业坤",
+         age:18
+      },
+      created() {
+      console.log(this.$attrs);
       },
       components:{
-        cpn,
-        cpn1
+        father
       }
     })
   </script>
