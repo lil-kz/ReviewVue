@@ -1,50 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="utf-8">
+  <title>示例</title>
+
 </head>
-<!-- 
-  插槽初使用
-  具名插槽 当我们使用具名插槽时，想要修改某一个
-  插槽的内容那么在组件中写入新的标签，并且标签内部
-  要写上属性 slot="***" 你定义的插槽name
- -->
+
 <body>
   <div id="app">
-    <cpn>
-      <!-- <span slot="center">标题</span> -->
-      <div slot="center">
-        <p>1</p>
-        <p>1</p>
-        <p>1</p>
-      </div>
-    </cpn>
+    <keep-alive>
+    <cpn :is="currentView"></cpn>
+    </keep-alive>
+    <button @click="handleChangView('A')">切换到A</button>
+    <button @click="handleChangView('B')">切换到B</button>
+    <button @click="handleChangView('C')">切换到C</button>
   </div>
-  <template id="cpn">
-    <div>
-      <slot name="left"><span>左边</span> </slot>
-      <slot name="center"><span>中间</span> </slot>
-      <slot name="right"><span>右边</span> </slot>
-    </div>
-  </template>
-
   <script src="./js/vue.js"></script>
   <script>
 
-    const cpn = {
-      template:"#cpn",
-    }
+    // const
 
-    const app = new Vue({
-      el: "#app",
-      data: {
-        name: "周业坤",
+    var app = new Vue({
+      el: '#app',
+      mounted() {
+        console.log("233");
+        
       },
-      components:{
-        cpn
+      components: {
+        comA: {
+          template: '<div>组件A</div>',
+          mounted() {
+        console.log("233");
+        
+      },
+        },
+        comB: {
+          template: '<div>组件B</div>',
+          mounted() {
+        console.log("233");
+        
+      },
+        },
+        comC: {
+          template: '<div>组件C</div>',
+          mounted() {
+        console.log("233");
+        
+      },
+        }
+      },
+      data: {
+        currentView:"comA"
+      },
+      methods: {
+        handleChangView(component){
+          this.currentView = 'com' + component;
+        }
       }
     })
   </script>
