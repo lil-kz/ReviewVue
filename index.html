@@ -1,62 +1,28 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
+<!-- 
+  前端模块化
+  如果宁的项目涉及到多人开发，那么就可能存在变量污染等问题
+  变量我们可以通过匿名闭包解决，但是又有了新问题，代码不能复用。
+  怎么解决？
+ -->
 <head>
-  <meta charset="utf-8">
-  <title>示例</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
   <div id="app">
-    <keep-alive>
-    <cpn :is="currentView"></cpn>
-    </keep-alive>
-    <button @click="handleChangView('A')">切换到A</button>
-    <button @click="handleChangView('B')">切换到B</button>
-    <button @click="handleChangView('C')">切换到C</button>
+    <h2> {{name}} </h2>
   </div>
+
   <script src="./js/vue.js"></script>
   <script>
-
-    // const
-
-    var app = new Vue({
-      el: '#app',
-      mounted() {
-        console.log("233");
-        
-      },
-      components: {
-        comA: {
-          template: '<div>组件A</div>',
-          mounted() {
-        console.log("233");
-        
-      },
-        },
-        comB: {
-          template: '<div>组件B</div>',
-          mounted() {
-        console.log("233");
-        
-      },
-        },
-        comC: {
-          template: '<div>组件C</div>',
-          mounted() {
-        console.log("233");
-        
-      },
-        }
-      },
+    const app = new Vue({
+      el: "#app",
       data: {
-        currentView:"comA"
-      },
-      methods: {
-        handleChangView(component){
-          this.currentView = 'com' + component;
-        }
+        name: "周业坤",
       }
     })
   </script>
